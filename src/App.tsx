@@ -1,6 +1,5 @@
-import { Canvas, FillText, FillImage } from "@theparthka/canvaslib"
+import { Canvas, FillText, FillImage, FillBarCodeQR } from "@theparthka/canvaslib"
 import { useContext, useEffect, useRef, useState } from "react"
-import { CanvasElement } from "../../canvasLib/dist/element"
 
 const App = () => {
 
@@ -59,6 +58,9 @@ const App = () => {
     img3.width = 300
     nimg.setSrc(img3)
     nimg.setPos({ x: 10, y: 30 })
+    nimg.setAutoSize(false)
+    nimg.setHeight(300)
+    nimg.setWidth(300)
     c?.add(nimg)
     c?.render()
   }
@@ -83,7 +85,19 @@ const App = () => {
     }
   })
 
+  const addQrCode = () => {
+    var nimg = new FillBarCodeQR()
+    nimg.setData("")
+    nimg.setPos({ x: 10, y: 30 })
+    nimg.setWidth(500)
+    nimg.setHeight(500)
+    nimg.setAutoSize(false)
+    c?.add(nimg)
+    c?.render()
+  }
+
   const [border, setBorder] = useState(0)
+  const [showFieldBg, setShowFieldBg] = useState(false)
 
   return (
     <>
@@ -138,6 +152,18 @@ const App = () => {
           }
         }} />
 
+        <button onClick={() => {
+          if (c) {
+            c.showFieldBg = !c.showFieldBg
+            setShowFieldBg(c.showFieldBg)
+            c.setFieldBg(!showFieldBg)
+            c.render()
+          }
+        }}>
+          {showFieldBg ? "Hide" : "Show"} Field Background
+        </button>
+
+        <button onClick={() => addQrCode()}>QrCode</button>
       </div>
     </>
   )
