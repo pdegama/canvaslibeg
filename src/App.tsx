@@ -1,5 +1,6 @@
 import { Canvas, FillText, FillImage } from "@theparthka/canvaslib"
-import { useEffect, useRef, useState } from "react"
+import { useContext, useEffect, useRef, useState } from "react"
+import { CanvasElement } from "../../canvasLib/dist/element"
 
 const App = () => {
 
@@ -62,6 +63,28 @@ const App = () => {
     c?.render()
   }
 
+  const changeStyle = (style: "uppercase" | "lowercase" | "none") => {
+    if (c?.selectedEles()[0] instanceof FillText) {
+      let text = c.selectedEles()[0] as FillText
+      text.setStyle(style)
+      c.render()
+    }
+  }
+
+  const [style, setStyle] = useState<"uppercase" | "lowercase" | "none">("none")
+  c?.onMouseUp(() => {
+    if (c?.selectedEles()[0] instanceof FillText) {
+      let text = c.selectedEles()[0] as FillText
+      let style = text.getStyle()
+      setStyle(style)
+    } else if (c?.selectedEles()[0] instanceof FillImage) {
+      let ele = c.selectedEles()[0] as FillImage
+      setBorder(ele.getBorder())
+    }
+  })
+
+  const [border, setBorder] = useState(0)
+
   return (
     <>
       <canvas ref={canvas_ref} style={{
@@ -94,6 +117,26 @@ const App = () => {
         <button onClick={() => addImage()}>
           Add Image
         </button>
+
+        <select onChange={(e) => {
+          let value = e.target.value as "uppercase" | "lowercase" | "none"
+          changeStyle(value)
+          setStyle(value)
+        }} value={style}>
+          <option value="uppercase">UpperCase</option>
+          <option value="lowercase">LowerCase</option>
+          <option value="none">None</option>
+        </select>
+
+        <input value={border} type="number" onChange={(e) => {
+          let value = parseInt(e.target.value)
+          if (c?.selectedEles()[0] instanceof FillImage) {
+            let ele = c.selectedEles()[0] as FillImage
+            ele.setBorder(String(value) as any)
+            setBorder(value)
+            c.render()
+          }
+        }} />
 
       </div>
     </>

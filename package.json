@@ -10,7 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@theparthka/canvaslib": "^0.2.0",
+    "@theparthka/canvaslib": "@theparthka/canvaslib",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
