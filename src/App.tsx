@@ -1,5 +1,5 @@
 import { Canvas, FillText, FillImage, FillBarCodeQR } from "@theparthka/canvaslib"
-import { useContext, useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 const App = () => {
 
@@ -17,6 +17,7 @@ const App = () => {
     })
     can1.setEnvs({
       name: "Parth Degama",
+      qr: "",
     })
     setCanvas(can1)
   }, [])
@@ -46,7 +47,8 @@ const App = () => {
 
   const constChangeEnv = () => {
     c?.setEnvs({
-      name: c.envs.name === "Parth Degama" ? "Parth..." : "Parth Degama"
+      name: c.envs.name === "Parth Degama" ? "Parth..." : "Parth Degama",
+      qr: c.envs.qr === "" ? "hello..." : "",
     })
     c?.render()
   }
@@ -87,7 +89,20 @@ const App = () => {
 
   const addQrCode = () => {
     var nimg = new FillBarCodeQR()
-    nimg.setData("")
+    nimg.setType("qr")
+    nimg.setEnv("qr")
+    nimg.setPos({ x: 10, y: 30 })
+    nimg.setWidth(500)
+    nimg.setHeight(500)
+    nimg.setAutoSize(false)
+    c?.add(nimg)
+    c?.render()
+  }
+
+    const addBarcode = () => {
+    var nimg = new FillBarCodeQR()
+    nimg.setType("barcode")
+    nimg.setEnv("qr")
     nimg.setPos({ x: 10, y: 30 })
     nimg.setWidth(500)
     nimg.setHeight(500)
@@ -164,6 +179,7 @@ const App = () => {
         </button>
 
         <button onClick={() => addQrCode()}>QrCode</button>
+        <button onClick={() => addBarcode()}>BarCode</button>
       </div>
     </>
   )
